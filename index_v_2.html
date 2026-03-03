@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заявки Художественная Гимнастика</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* Выбор турнира */
+        .tournament-section {
+            margin-bottom: 30px;
+        }
+        
+        .tournament-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .tournament-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .tournament-card {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            border: 4px solid transparent;
+        }
+        
+        .tournament-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .tournament-card.active {
+            border-color: #ff9a9e;
+            background: #f8f9fa;
+        }
+        
+        .tournament-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .tournament-card p {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .tournament-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        /* Формы */
+        .forms-container {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .forms-container.visible {
+            display: block;
+        }
+        
+        .tournament-info {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+            font-size: 1.2em;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .form-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .gymnast-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .gymnast-card:hover {
+            border-color: #667eea;
+        }
+        
+        .gymnast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .gymnast-header h4 {
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .gymnast-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .remove-gymnast {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .remove-gymnast:hover {
+            background: #cc0000;
+        }
+        
+        .add-gymnast {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+            width: 100%;
+            font-weight: 600;
+        }
+        
+        .add-gymnast:hover {
+            background: #45a049;
+        }
+        
+        .add-gymnast:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .gymnast-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .warning-message {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #ffeeba;
+            font-size: 14px;
+        }
+        
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-top: 20px;
+        }
+        
+        button[type="submit"]:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+            animation: fadeOut 5s forwards;
+            animation-delay: 3s;
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            display: none;
+            border: 2px solid #667eea;
+        }
+        
+        .preview.show {
+            display: block;
+        }
+        
+        .preview h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .preview h3:before {
+            content: "⚠️";
+            font-size: 24px;
+        }
+        
+        .preview-content {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .preview-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preview-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .confirm-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #999;
+            color: white;
+        }
+        
+        .preview-note {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .gymnast-fields {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                border-radius: 8px;
+            }
+            
+            .tournament-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tournament-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Заявки Художественная Гимнастика ✨</h1>
+        
+        <!-- Выбор турнира -->
+        <div class="tournament-section">
+            <div class="tournament-title">Выберите турнир для подачи заявки</div>
+            <div class="tournament-selector">
+                <div class="tournament-card" onclick="selectTournament('spring')" id="tournament-spring">
+                    <h2>🌸 Великолепие весны</h2>
+                    <p>20-21 марта 2025</p>
+                    <span class="tournament-badge" style="display: none;">Выбрано</span>
+                </div>
+                
+                <div class="tournament-card" onclick="selectTournament('lada')" id="tournament-lada">
+                    <h2>🏆 Весенний кубок Лады</h2>
+                    <p>4-5 апреля 2025</p>
+                    <span class="tournament-badge" style="display: none;">Выбрано</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Формы (скрыты, пока не выбран турнир) -->
+        <div id="formsContainer" class="forms-container">
+            <div id="tournamentInfo" class="tournament-info"></div>
+            
+            <!-- Вкладки -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('individual')">Индивидуальная программа</button>
+                <button class="tab-button" onclick="showTab('group')">Групповое упражнение</button>
+                <button class="tab-button" onclick="showTab('pairs')">Двойки и тройки</button>
+                <button class="tab-button" onclick="showTab('ofp')">ОФП</button>
+            </div>
+            
+            <!-- Индивидуальная программа -->
+            <div id="tab-individual" class="tab-content active">
+                <form id="form-individual">
+                    <div class="form-section">
+                        <h3>Общая информация</h3>
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" name="city" required placeholder="Например: Самара" pattern="[А-Яа-яЁё\s-]+" title="Только буквы">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Организация</label>
+                            <input type="text" name="organization" required placeholder="Спортивная школа / Клуб">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ФИО тренеров (указать через запятую)</label>
+                            <input type="text" name="coaches" required placeholder="Иванова А.А., Петрова Е.С.">
+                        </div>
+                    </div>
+                    
+                    <h3>Список гимнасток</h3>
+                    <div id="individual-gymnasts"></div>
+                    
+                    <button type="button" class="add-gymnast" onclick="addGymnast('individual')">+ Добавить гимнастку</button>
+                    <button type="submit">Отправить заявку</button>
+                </form>
+            </div>
+            
+            <!-- Групповое упражнение -->
+            <div id="tab-group" class="tab-content">
+                <form id="form-group">
+                    <div class="form-section">
+                        <h3>Общая информация</h3>
+                        <div class="form-group">
+                            <label>Название команды</label>
+                            <input type="text" name="team_name" required placeholder="Например: Грация">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Категория</label>
+                            <select name="category" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="А">Категория А</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" name="city" required placeholder="Например: Самара" pattern="[А-Яа-яЁё\s-]+" title="Только буквы">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Организация</label>
+                            <input type="text" name="organization" required placeholder="Спортивная школа / Клуб">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ФИО тренеров (указать через запятую)</label>
+                            <input type="text" name="coaches" required placeholder="Иванова А.А., Петрова Е.С.">
+                        </div>
+                    </div>
+                    
+                    <h3>Список гимнасток (максимум 6)</h3>
+                    <div id="group-gymnasts"></div>
+                    
+                    <button type="button" class="add-gymnast" onclick="addGymnast('group')" id="group-add-btn">+ Добавить гимнастку</button>
+                    <button type="submit">Отправить заявку</button>
+                </form>
+            </div>
+            
+            <!-- Двойки и тройки -->
+            <div id="tab-pairs" class="tab-content">
+                <form id="form-pairs">
+                    <div class="form-section">
+                        <h3>Общая информация</h3>
+                        <div class="form-group">
+                            <label>Название команды</label>
+                            <input type="text" name="team_name" required placeholder="Например: Грация">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Тип программы</label>
+                            <select name="program_subtype" required onchange="updatePairsMax(this)">
+                                <option value="">Выберите тип</option>
+                                <option value="двойки">Двойки</option>
+                                <option value="тройки">Тройки</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Категория</label>
+                            <select name="category" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="А">Категория А</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" name="city" required placeholder="Например: Самара" pattern="[А-Яа-яЁё\s-]+" title="Только буквы">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Организация</label>
+                            <input type="text" name="organization" required placeholder="Спортивная школа / Клуб">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ФИО тренеров (указать через запятую)</label>
+                            <input type="text" name="coaches" required placeholder="Иванова А.А., Петрова Е.С.">
+                        </div>
+                    </div>
+                    
+                    <div id="pairs-warning" class="warning-message" style="display: none;"></div>
+                    
+                    <h3>Список гимнасток</h3>
+                    <div id="pairs-gymnasts"></div>
+                    
+                    <button type="button" class="add-gymnast" onclick="addGymnast('pairs')" id="pairs-add-btn">+ Добавить гимнастку</button>
+                    <button type="submit">Отправить заявку</button>
+                </form>
+            </div>
+            
+            <!-- ОФП -->
+            <div id="tab-ofp" class="tab-content">
+                <form id="form-ofp">
+                    <div class="form-section">
+                        <h3>Общая информация</h3>
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" name="city" required placeholder="Например: Самара" pattern="[А-Яа-яЁё\s-]+" title="Только буквы">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Организация</label>
+                            <input type="text" name="organization" required placeholder="Спортивная школа / Клуб">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ФИО тренеров (указать через запятую)</label>
+                            <input type="text" name="coaches" required placeholder="Иванова А.А., Петрова Е.С.">
+                        </div>
+                    </div>
+                    
+                    <h3>Список гимнасток</h3>
+                    <div id="ofp-gymnasts"></div>
+                    
+                    <button type="button" class="add-gymnast" onclick="addGymnast('ofp')">+ Добавить гимнастку</button>
+                    <button type="submit">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Результат и предпросмотр -->
+        <div id="result" class="result"></div>
+        <div id="preview" class="preview">
+            <h3>Проверьте заявку перед отправкой</h3>
+            <div id="preview-content" class="preview-content"></div>
+            <div class="preview-buttons">
+                <button class="confirm-btn" onclick="confirmSubmit()">✅ Подтвердить отправку</button>
+                <button class="cancel-btn" onclick="hidePreview()">✖ Вернуться к редактированию</button>
+            </div>
+            <div class="preview-note">Проверьте все данные. После подтверждения заявка будет отправлена.</div>
+        </div>
+    </div>
+
+    <script>
+        // URL-ы для разных турниров
+        const TOURNAMENT_URLS = {
+            spring: 'https://script.google.com/macros/s/ССЫЛКА_ДЛЯ_ВЕЛИКОЛЕПИЯ_ВЕСНЫ/exec',
+            lada: 'https://script.google.com/macros/s/ССЫЛКА_ДЛЯ_КУБКА_ЛАДЫ/exec'
+        };
+        
+        let currentTournament = null;
+        let currentFormData = null;
+        let currentFormId = null;
+        
+        // Данные для турнира "Весенний кубок Лады"
+        const LADA_PROGRAMS = {
+            individual: [
+                { value: 'МС', label: 'Программа МС (Женщины, 16 лет и старше, 2010 г.р. и ст.)' },
+                { value: 'КМС', label: 'Программа КМС (Юниорки, 14-15 лет, 2011-2012 г.р.)' },
+                { value: 'I разряд', label: 'Программа I разряда (Девочки, 12-13 лет, 2013-2014 г.р.)' },
+                { value: 'II разряд', label: 'Программа II разряда (Девочки, 11 лет, 2015 г.р.)' },
+                { value: 'III разряд', label: 'Программа III разряда (Девочки, 10 лет, 2016 г.р.)' },
+                { value: 'I юношеский', label: 'Программа I юношеского разряда (Девочки, 9 лет, 2017 г.р.)' },
+                { value: 'II юношеский', label: 'Программа II юношеского разряда (Девочки, 8 лет, 2018 г.р.)' },
+                { value: 'III юношеский', label: 'Программа III юношеского разряда (Девочки, 7 лет, 2019 г.р.)' },
+                { value: 'Юный гимнаст', label: 'Юный гимнаст (Девочки, 6 лет и младше, 2020 г.р. и младше)' }
+            ],
+            group: [
+                { value: 'МС', label: 'Программа МС' },
+                { value: 'КМС', label: 'Программа КМС' },
+                { value: 'I разряд', label: 'I разряд' },
+                { value: 'II разряд', label: 'II разряд' },
+                { value: 'III разряд', label: 'III разряд' },
+                { value: 'I юношеский', label: 'I юношеский' },
+                { value: 'II юношеский', label: 'II юношеский' },
+                { value: 'III юношеский', label: 'III юношеский' },
+                { value: 'Юный гимнаст', label: 'Юный гимнаст' }
+            ],
+            ofp: [
+                { value: '2020 и младше', label: 'Для участниц 2020 г.р. и младше' },
+                { value: '2017-2019', label: 'Для участниц 2017-2019 г.р.' }
+            ]
+        };
+        
+        const LADA_CATEGORIES = [
+            'Категория A',
+            'Категория A+',
+            'Категория B',
+            'Категория C'
+        ];
+        
+        // Максимальное количество гимнасток
+        const MAX_GYMNASTS = {
+            group: 6,
+            pairs: {
+                двойки: 2,
+                тройки: 3
+            }
+        };
+        
+        function selectTournament(tournament) {
+            currentTournament = tournament;
+            
+            // Обновляем отображение карточек
+            document.querySelectorAll('.tournament-card').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('.tournament-badge').style.display = 'none';
+            });
+            
+            document.getElementById(`tournament-${tournament}`).classList.add('active');
+            document.querySelector(`#tournament-${tournament} .tournament-badge`).style.display = 'inline-block';
+            
+            // Показываем формы
+            document.getElementById('formsContainer').classList.add('visible');
+            
+            // Обновляем информацию о турнире
+            const infoDiv = document.getElementById('tournamentInfo');
+            if (tournament === 'spring') {
+                infoDiv.textContent = '🌸 Выбран турнир: Великолепие весны (20-21 марта 2025)';
+            } else {
+                infoDiv.textContent = '🏆 Выбран турнир: Весенний кубок Лады (4-5 апреля 2025)';
+            }
+            
+            // Пересоздаем карточки гимнасток с нужными полями
+            refreshGymnastCards();
+        }
+        
+        function refreshGymnastCards() {
+            // Очищаем все контейнеры
+            ['individual', 'group', 'pairs', 'ofp'].forEach(type => {
+                const container = document.getElementById(`${type}-gymnasts`);
+                container.innerHTML = '';
+            });
+            
+            // Добавляем по одной гимнастке в каждую форму
+            addGymnast('individual');
+            addGymnast('group');
+            addGymnast('pairs');
+            addGymnast('ofp');
+        }
+        
+        function getFieldTemplate(formType, index) {
+            // Для турнира "Великолепие весны" - старые поля
+            if (currentTournament === 'spring') {
+                if (formType === 'individual') {
+                    return `
+                        <div class="gymnast-fields">
+                            <div class="form-group">
+                                <label>ФИО гимнастки</label>
+                                <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                            </div>
+                            <div class="form-group">
+                                <label>Год рождения</label>
+                                <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                            </div>
+                            <div class="form-group">
+                                <label>Дивизион</label>
+                                <select name="gymnast_${index}_division" required>
+                                    <option value="">Выберите дивизион</option>
+                                    <option value="1 дивизион 2020 и младше">1 дивизион 2020 и младше</option>
+                                    <option value="1 дивизион 2019">1 дивизион 2019</option>
+                                    <option value="1 дивизион 2018">1 дивизион 2018</option>
+                                    <option value="1 дивизион 2017">1 дивизион 2017</option>
+                                    <option value="1 дивизион 2016">1 дивизион 2016</option>
+                                    <option value="1 дивизион 2015">1 дивизион 2015</option>
+                                    <option value="1 дивизион 2014">1 дивизион 2014</option>
+                                    <option value="1 дивизион 2013">1 дивизион 2013</option>
+                                    <option value="1 дивизион 2012">1 дивизион 2012</option>
+                                    <option value="1 дивизион 2011 и старше">1 дивизион 2011 и старше</option>
+                                    <option value="2 дивизион 2020 и младше">2 дивизион 2020 и младше</option>
+                                    <option value="2 дивизион 2019">2 дивизион 2019</option>
+                                    <option value="2 дивизион 2018">2 дивизион 2018</option>
+                                    <option value="2 дивизион 2017">2 дивизион 2017</option>
+                                    <option value="2 дивизион 2016">2 дивизион 2016</option>
+                                    <option value="2 дивизион 2015">2 дивизион 2015</option>
+                                    <option value="2 дивизион 2014">2 дивизион 2014</option>
+                                    <option value="2 дивизион 2013">2 дивизион 2013</option>
+                                    <option value="2 дивизион 2012">2 дивизион 2012</option>
+                                    <option value="2 дивизион 2011 и старше">2 дивизион 2011 и старше</option>
+                                    <option value="3 дивизион 2020 и младше">3 дивизион 2020 и младше</option>
+                                    <option value="3 дивизион 2019">3 дивизион 2019</option>
+                                    <option value="3 дивизион 2018">3 дивизион 2018</option>
+                                    <option value="3 дивизион 2017">3 дивизион 2017</option>
+                                    <option value="3 дивизион 2016">3 дивизион 2016</option>
+                                    <option value="3 дивизион 2015">3 дивизион 2015</option>
+                                    <option value="3 дивизион 2014">3 дивизион 2014</option>
+                                    <option value="3 дивизион 2013">3 дивизион 2013</option>
+                                    <option value="3 дивизион 2012">3 дивизион 2012</option>
+                                    <option value="3 дивизион 2011 и старше">3 дивизион 2011 и старше</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                } else if (formType === 'group' || formType === 'pairs') {
+                    return `
+                        <div class="gymnast-fields">
+                            <div class="form-group">
+                                <label>ФИО гимнастки</label>
+                                <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                            </div>
+                            <div class="form-group">
+                                <label>Год рождения</label>
+                                <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                            </div>
+                            <div class="form-group">
+                                <label>Разряд</label>
+                                <select name="gymnast_${index}_rank" required>
+                                    <option value="">Выберите разряд</option>
+                                    <option value="МС">МС</option>
+                                    <option value="КМС">КМС</option>
+                                    <option value="1 разряд">1 разряд</option>
+                                    <option value="2 разряд">2 разряд</option>
+                                    <option value="3 разряд">3 разряд</option>
+                                    <option value="1 юношеский">1 юношеский</option>
+                                    <option value="2 юношеский">2 юношеский</option>
+                                    <option value="3 юношеский">3 юношеский</option>
+                                    <option value="б/р">б/р</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                } else if (formType === 'ofp') {
+                    return `
+                        <div class="gymnast-fields">
+                            <div class="form-group">
+                                <label>ФИО гимнастки</label>
+                                <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                            </div>
+                            <div class="form-group">
+                                <label>Год рождения</label>
+                                <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Для турнира "Весенний кубок Лады" - новые поля
+            if (formType === 'individual') {
+                return `
+                    <div class="gymnast-fields">
+                        <div class="form-group">
+                            <label>ФИО гимнастки</label>
+                            <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                        </div>
+                        <div class="form-group">
+                            <label>Год рождения</label>
+                            <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label>Программа</label>
+                            <select name="gymnast_${index}_program" required onchange="updateCategoryOptions(this, ${index})">
+                                <option value="">Выберите программу</option>
+                                ${LADA_PROGRAMS.individual.map(p => `<option value="${p.value}">${p.label}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Разряд</label>
+                            <select name="gymnast_${index}_rank" required>
+                                <option value="">Выберите разряд</option>
+                                <option value="МС">МС</option>
+                                <option value="КМС">КМС</option>
+                                <option value="1 разряд">1 разряд</option>
+                                <option value="2 разряд">2 разряд</option>
+                                <option value="3 разряд">3 разряд</option>
+                                <option value="1 юношеский">1 юношеский</option>
+                                <option value="2 юношеский">2 юношеский</option>
+                                <option value="3 юношеский">3 юношеский</option>
+                                <option value="б/р">б/р</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Категория</label>
+                            <select name="gymnast_${index}_category" required>
+                                <option value="">Выберите категорию</option>
+                                ${LADA_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            } else if (formType === 'group' || formType === 'pairs') {
+                return `
+                    <div class="gymnast-fields">
+                        <div class="form-group">
+                            <label>ФИО гимнастки</label>
+                            <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                        </div>
+                        <div class="form-group">
+                            <label>Год рождения</label>
+                            <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label>Программа</label>
+                            <select name="gymnast_${index}_program" required>
+                                <option value="">Выберите программу</option>
+                                ${LADA_PROGRAMS.group.map(p => `<option value="${p.value}">${p.label}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Разряд</label>
+                            <select name="gymnast_${index}_rank" required>
+                                <option value="">Выберите разряд</option>
+                                <option value="МС">МС</option>
+                                <option value="КМС">КМС</option>
+                                <option value="1 разряд">1 разряд</option>
+                                <option value="2 разряд">2 разряд</option>
+                                <option value="3 разряд">3 разряд</option>
+                                <option value="1 юношеский">1 юношеский</option>
+                                <option value="2 юношеский">2 юношеский</option>
+                                <option value="3 юношеский">3 юношеский</option>
+                                <option value="б/р">б/р</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            } else if (formType === 'ofp') {
+                return `
+                    <div class="gymnast-fields">
+                        <div class="form-group">
+                            <label>ФИО гимнастки</label>
+                            <input type="text" name="gymnast_${index}_fio" required placeholder="Иванова Анна">
+                        </div>
+                        <div class="form-group">
+                            <label>Год рождения</label>
+                            <input type="text" name="gymnast_${index}_birth_year" required placeholder="2015" pattern="[0-9]{4}" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label>Программа</label>
+                            <select name="gymnast_${index}_program" required>
+                                <option value="">Выберите программу</option>
+                                ${LADA_PROGRAMS.ofp.map(p => `<option value="${p.value}">${p.label}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        function updateCategoryOptions(programSelect, gymnastIndex) {
+            if (currentTournament !== 'lada') return;
+            
+            const program = programSelect.value;
+            const categorySelect = document.querySelector(`select[name="gymnast_${gymnastIndex}_category"]`);
+            
+            if (!categorySelect) return;
+            
+            // Очищаем текущие опции
+            categorySelect.innerHTML = '<option value="">Выберите категорию</option>';
+            
+            // Для МС и КМС убираем категорию С
+            if (program === 'МС' || program === 'КМС') {
+                LADA_CATEGORIES.filter(c => c !== 'Категория C').forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c;
+                    option.textContent = c;
+                    categorySelect.appendChild(option);
+                });
+            } else {
+                LADA_CATEGORIES.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c;
+                    option.textContent = c;
+                    categorySelect.appendChild(option);
+                });
+            }
+        }
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function addGymnast(formType) {
+            if (!currentTournament) {
+                alert('Сначала выберите турнир');
+                return;
+            }
+            
+            const container = document.getElementById(`${formType}-gymnasts`);
+            const index = container.children.length + 1;
+            
+            if (formType === 'group' && index > MAX_GYMNASTS.group) {
+                alert(`В команде может быть максимум ${MAX_GYMNASTS.group} гимнасток`);
+                return;
+            }
+            
+            if (formType === 'pairs') {
+                const programSubtype = document.querySelector('#form-pairs select[name="program_subtype"]').value;
+                if (!programSubtype && index > 1) {
+                    alert('Сначала выберите тип программы: двойки или тройки');
+                    return;
+                }
+                if (programSubtype && index > MAX_GYMNASTS.pairs[programSubtype]) {
+                    alert(`В ${programSubtype} может быть максимум ${MAX_GYMNASTS.pairs[programSubtype]} гимнастки(ок)`);
+                    return;
+                }
+            }
+            
+            const card = document.createElement('div');
+            card.className = 'gymnast-card';
+            card.innerHTML = `
+                <div class="gymnast-header">
+                    <span class="gymnast-number">${index}</span>
+                    <h4>Гимнастка ${index}</h4>
+                </div>
+                ${getFieldTemplate(formType, index)}
+                <button type="button" class="remove-gymnast" onclick="removeGymnast(this)">✖ Удалить</button>
+            `;
+            
+            container.appendChild(card);
+            updateNumbers(formType);
+            updateAddButton(formType);
+        }
+        
+        function removeGymnast(button) {
+            const card = button.closest('.gymnast-card');
+            const container = card.parentNode;
+            
+            if (container.children.length > 1) {
+                card.remove();
+                updateNumbers(container.id.replace('-gymnasts', ''));
+                updateAddButton(container.id.replace('-gymnasts', ''));
+            } else {
+                alert('Должна быть хотя бы одна гимнастка');
+            }
+        }
+        
+        function updateNumbers(formType) {
+            const container = document.getElementById(`${formType}-gymnasts`);
+            container.querySelectorAll('.gymnast-card').forEach((card, idx) => {
+                const number = idx + 1;
+                card.querySelector('.gymnast-number').textContent = number;
+                card.querySelector('h4').textContent = `Гимнастка ${number}`;
+                
+                const fields = card.querySelectorAll('input, select');
+                fields.forEach(field => {
+                    const name = field.getAttribute('name');
+                    if (name) {
+                        const newName = name.replace(/_\d+_/, `_${number}_`);
+                        field.setAttribute('name', newName);
+                    }
+                });
+            });
+        }
+        
+        function updateAddButton(formType) {
+            if (formType === 'group') {
+                const count = document.getElementById('group-gymnasts').children.length;
+                const addBtn = document.getElementById('group-add-btn');
+                addBtn.disabled = count >= MAX_GYMNASTS.group;
+            } else if (formType === 'pairs') {
+                const programSubtype = document.querySelector('#form-pairs select[name="program_subtype"]').value;
+                if (programSubtype) {
+                    const count = document.getElementById('pairs-gymnasts').children.length;
+                    const addBtn = document.getElementById('pairs-add-btn');
+                    addBtn.disabled = count >= MAX_GYMNASTS.pairs[programSubtype];
+                    
+                    const warning = document.getElementById('pairs-warning');
+                    if (count >= MAX_GYMNASTS.pairs[programSubtype]) {
+                        warning.style.display = 'block';
+                        warning.textContent = `Достигнут максимум для ${programSubtype} (${MAX_GYMNASTS.pairs[programSubtype]} гимнастки(ок))`;
+                    } else {
+                        warning.style.display = 'none';
+                    }
+                }
+            }
+        }
+        
+        function updatePairsMax(select) {
+            const programSubtype = select.value;
+            const container = document.getElementById('pairs-gymnasts');
+            
+            if (programSubtype) {
+                const currentCount = container.children.length;
+                const maxCount = MAX_GYMNASTS.pairs[programSubtype];
+                
+                if (currentCount > maxCount) {
+                    while (container.children.length > maxCount) {
+                        container.removeChild(container.lastChild);
+                    }
+                }
+                
+                updateNumbers('pairs');
+                updateAddButton('pairs');
+            }
+        }
+        
+        function collectFormData(formId) {
+            const form = document.getElementById(`form-${formId}`);
+            const formData = new FormData(form);
+            const data = {
+                tournament: currentTournament === 'spring' ? 'Великолепие весны' : 'Весенний кубок Лады',
+                tournament_dates: currentTournament === 'spring' ? '20-21 марта 2025' : '4-5 апреля 2025',
+                program_type: getProgramType(formId),
+                program_subtype: formData.get('program_subtype') || '',
+                timestamp: new Date().toLocaleString('ru-RU'),
+                city: formData.get('city'),
+                organization: formData.get('organization'),
+                coaches: formData.get('coaches'),
+                team_name: formData.get('team_name') || '',
+                category: formData.get('category') || '',
+                gymnasts: []
+            };
+            
+            const gymnastCards = document.querySelectorAll(`#${formId}-gymnasts .gymnast-card`);
+            gymnastCards.forEach((card, index) => {
+                const gymnastNumber = index + 1;
+                const gymnastData = {
+                    number: gymnastNumber,
+                    fio: card.querySelector(`[name="gymnast_${gymnastNumber}_fio"]`).value,
+                    birth_year: card.querySelector(`[name="gymnast_${gymnastNumber}_birth_year"]`).value,
+                };
+                
+                if (currentTournament === 'spring') {
+                    if (formId === 'individual') {
+                        gymnastData.division = card.querySelector(`[name="gymnast_${gymnastNumber}_division"]`).value;
+                    } else if (formId === 'group' || formId === 'pairs') {
+                        gymnastData.rank = card.querySelector(`[name="gymnast_${gymnastNumber}_rank"]`).value;
+                    }
+                } else {
+                    gymnastData.program = card.querySelector(`[name="gymnast_${gymnastNumber}_program"]`).value;
+                    
+                    if (formId === 'individual') {
+                        gymnastData.rank = card.querySelector(`[name="gymnast_${gymnastNumber}_rank"]`).value;
+                        gymnastData.category = card.querySelector(`[name="gymnast_${gymnastNumber}_category"]`).value;
+                    } else if (formId === 'group' || formId === 'pairs') {
+                        gymnastData.rank = card.querySelector(`[name="gymnast_${gymnastNumber}_rank"]`).value;
+                    }
+                }
+                
+                data.gymnasts.push(gymnastData);
+            });
+            
+            return data;
+        }
+        
+        function getProgramType(formId) {
+            const types = {
+                'individual': 'Индивидуальная программа',
+                'group': 'Групповое упражнение',
+                'pairs': 'Двойки и тройки',
+                'ofp': 'ОФП'
+            };
+            return types[formId];
+        }
+        
+        function showPreview(formId) {
+            if (!currentTournament) {
+                alert('Сначала выберите турнир');
+                return;
+            }
+            
+            const form = document.getElementById(`form-${formId}`);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            if (formId === 'pairs') {
+                const programSubtype = document.querySelector('#form-pairs select[name="program_subtype"]').value;
+                if (!programSubtype) {
+                    alert('Выберите тип программы: двойки или тройки');
+                    return;
+                }
+            }
+            
+            currentFormData = collectFormData(formId);
+            currentFormId = formId;
+            
+            let previewText = `🏆 ТУРНИР: ${currentFormData.tournament}\n`;
+            previewText += `📅 Даты: ${currentFormData.tournament_dates}\n`;
+            previewText += `📋 ПРОГРАММА: ${currentFormData.program_type}\n`;
+            
+            if (currentFormData.program_subtype) {
+                previewText += `📌 Тип: ${currentFormData.program_subtype}\n`;
+            }
+            previewText += `🏙️ Город: ${currentFormData.city}\n`;
+            previewText += `🏛️ Организация: ${currentFormData.organization}\n`;
+            previewText += `👩‍🏫 Тренеры: ${currentFormData.coaches}\n`;
+            
+            if (currentFormData.team_name) {
+                previewText += `🏆 Команда: ${currentFormData.team_name}\n`;
+            }
+            
+            if (currentFormData.category) {
+                previewText += `📌 Категория: ${currentFormData.category}\n`;
+            }
+            
+            previewText += `\n👧 СПИСОК ГИМНАСТОК:\n`;
+            previewText += `────────────────────────────────────────\n`;
+            
+            currentFormData.gymnasts.forEach(g => {
+                previewText += `\n${g.number}. ${g.fio}\n`;
+                previewText += `   Год рождения: ${g.birth_year}\n`;
+                if (g.program) {
+                    previewText += `   Программа: ${g.program}\n`;
+                }
+                if (g.division) {
+                    previewText += `   Дивизион: ${g.division}\n`;
+                }
+                if (g.rank) {
+                    previewText += `   Разряд: ${g.rank}\n`;
+                }
+                if (g.category) {
+                    previewText += `   Категория: ${g.category}\n`;
+                }
+            });
+            
+            document.getElementById('preview-content').textContent = previewText;
+            document.getElementById('preview').classList.add('show');
+            
+            document.getElementById('preview').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        async function confirmSubmit() {
+            if (!currentFormData) return;
+            
+            document.getElementById('preview').classList.remove('show');
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result';
+            resultDiv.textContent = '⏳ Отправка...';
+            resultDiv.style.display = 'block';
+            
+            try {
+                const postData = new URLSearchParams();
+                postData.append('tournament', currentFormData.tournament);
+                postData.append('tournament_dates', currentFormData.tournament_dates);
+                postData.append('program_type', currentFormData.program_type);
+                postData.append('program_subtype', currentFormData.program_subtype);
+                postData.append('city', currentFormData.city);
+                postData.append('organization', currentFormData.organization);
+                postData.append('coaches', currentFormData.coaches);
+                postData.append('team_name', currentFormData.team_name);
+                postData.append('category', currentFormData.category);
+                postData.append('gymnasts', JSON.stringify(currentFormData.gymnasts));
+                
+                await fetch(TOURNAMENT_URLS[currentTournament], {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: postData
+                });
+                
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ Заявка успешно отправлена на турнир "${currentFormData.tournament}"!\n${currentFormData.gymnasts.length} гимнасток`;
+                
+                document.getElementById(`form-${currentFormId}`).reset();
+                const container = document.getElementById(`${currentFormId}-gymnasts`);
+                container.innerHTML = '';
+                addGymnast(currentFormId);
+                
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Ошибка при отправке';
+                console.error(error);
+                
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                }, 5000);
+            }
+            
+            currentFormData = null;
+            currentFormId = null;
+        }
+        
+        function hidePreview() {
+            document.getElementById('preview').classList.remove('show');
+            currentFormData = null;
+            currentFormId = null;
+        }
+        
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formId = this.id.replace('form-', '');
+                showPreview(formId);
+            });
+        });
+        
+        document.querySelector('#form-pairs select[name="program_subtype"]')?.addEventListener('change', function() {
+            updatePairsMax(this);
+        });
+    </script>
+</body>
+</html>
