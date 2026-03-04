@@ -658,13 +658,13 @@
                 <div class="tournament-card" onclick="showSpringForm()" id="tournament-spring">
                     <div class="tournament-icon">🌸</div>
                     <h3>Великолепие весны</h3>
-                    <div class="tournament-date">20-21 марта 2025</div>
+                    <div class="tournament-date">20-21 марта 2026</div>
                 </div>
                 
                 <div class="tournament-card" onclick="showLadaForm()" id="tournament-lada">
                     <div class="tournament-icon">🏆</div>
                     <h3>Весенний кубок Лады</h3>
-                    <div class="tournament-date">4-5 апреля 2025</div>
+                    <div class="tournament-date">4-5 апреля 2026</div>
                 </div>
             </div>
         </div>
@@ -674,7 +674,7 @@
             <div class="tournament-form">
                 <div class="form-header">
                     <h2>🌸 Великолепие весны</h2>
-                    <span class="form-badge">20-21 марта 2025</span>
+                    <span class="form-badge">20-21 марта 2026</span>
                 </div>
                 
                 <!-- Вкладки -->
@@ -893,7 +893,7 @@
             <div class="tournament-form">
                 <div class="form-header">
                     <h2>🏆 Весенний кубок Лады</h2>
-                    <span class="form-badge">4-5 апреля 2025</span>
+                    <span class="form-badge">4-5 апреля 2026</span>
                 </div>
                 
                 <!-- Вкладки -->
@@ -1120,7 +1120,7 @@
         // URL-ы для разных турниров - ЗАМЕНИТЕ НА СВОИ!
         const TOURNAMENT_URLS = {
             spring: 'https://script.google.com/macros/s/AKfycbxVPlfb7eefdZhIDQSq_HR_W7QkpGXpPMa_lfGTU6MZWsis46jkDefKzIO6CBXWllpNZg/exec',
-            lada: 'https://script.google.com/macros/s/ССЫЛКА_ДЛЯ_КУБКА_ЛАДЫ/exec'
+            lada: 'https://script.google.com/macros/s/AKfycbzKctzuZTfMLP5PxBgNFZLMN2RqNMCZQNzYv5ogBcYaqd4_tmYEsK9XpGVhlcjTEGi7XQ/exec'
         };
         
         // Данные для турнира "Весенний кубок Лады"
@@ -1738,7 +1738,7 @@
             springFormId = formId;
             
             let previewText = `🌸 ТУРНИР: Великолепие весны\n`;
-            previewText += `📅 Даты: 20-21 марта 2025\n`;
+            previewText += `📅 Даты: 20-21 марта 2026\n`;
             previewText += `📋 ПРОГРАММА: ${springFormData.program_type}\n`;
             
             if (springFormData.program_subtype) {
@@ -1836,7 +1836,7 @@
             try {
                 const postData = new URLSearchParams();
                 postData.append('tournament', 'Великолепие весны');
-                postData.append('tournament_dates', '20-21 марта 2025');
+                postData.append('tournament_dates', '20-21 марта 2026');
                 postData.append('program_type', springFormData.program_type);
                 postData.append('program_subtype', springFormData.program_subtype);
                 postData.append('program', springFormData.program);
@@ -1909,7 +1909,7 @@
             ladaFormId = formId;
             
             let previewText = `🏆 ТУРНИР: Весенний кубок Лады\n`;
-            previewText += `📅 Даты: 4-5 апреля 2025\n`;
+            previewText += `📅 Даты: 4-5 апреля 2026\n`;
             previewText += `📋 ПРОГРАММА: ${ladaFormData.program_type}\n`;
             
             if (ladaFormData.program_subtype) {
@@ -2012,7 +2012,7 @@
             try {
                 const postData = new URLSearchParams();
                 postData.append('tournament', 'Весенний кубок Лады');
-                postData.append('tournament_dates', '4-5 апреля 2025');
+                postData.append('tournament_dates', '4-5 апреля 2026');
                 postData.append('program_type', ladaFormData.program_type);
                 postData.append('program_subtype', ladaFormData.program_subtype);
                 postData.append('program', ladaFormData.program);
